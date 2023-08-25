@@ -1,0 +1,11 @@
+# frozen_string_literal: true
+
+require "spanner/translator"
+
+namespace :spanner do
+  desc "Translate Rails MySQL create_table statements to Cloud Spanner"
+  task :translate, [:table] => :environment do |_t, args|
+    source = Spanner::Translator::Schema.extract_create_table(args[:table])
+    puts Spanner::Translator::CLI.process_code!(source)
+  end
+end
