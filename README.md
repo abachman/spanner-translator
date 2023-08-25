@@ -44,7 +44,7 @@ Or in any project, call the library from a script:
 require 'spanner/translator'
 
 Spanner::Translator.configure do |config|
-    config.default_primary_keys = [:id]
+  config.default_primary_keys = [:id]
 end
 
 source = <<~RUBY

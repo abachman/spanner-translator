@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "rubocop-ast"
-require "rails"
 
 # Utility methods for working with Rails MySQL table schemas
 module Spanner
