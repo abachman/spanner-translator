@@ -15,4 +15,3 @@ module Spanner
     end
   end
 end
-

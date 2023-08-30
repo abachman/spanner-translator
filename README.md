@@ -6,7 +6,7 @@ Not intended to be a generally-useful gem, but available for use / fork as neede
 
 ## Installation
 
-Add the gem as a `git:` dependency to your Gemfile:
+Add the gem as a `github:` dependency to your Gemfile:
 
 ```ruby
 group :development do
@@ -55,6 +55,33 @@ source = <<~RUBY
 RUBY
 
 puts Spanner::Translator::CLI.process_code!(source)
+```
+
+Or, maybe simplest, use `bundler/inline` to gem install and require the library from a one-off Ruby script that can be run from inside a Rails project directory:
+
+```ruby
+require 'bundler/inline'
+gemfile do
+  source 'https://rubygems.org'
+  gem 'spanner-translator', github: 'abachman/spanner-translator', branch: 'main'
+end
+
+require 'spanner/translator'
+Spanner::Translator.configure do |config|
+  # use a composite primary key for every converted table
+  config.default_primary_keys = [:owner_id, :id]
+  # spanner-translator assumes schema exists at ./db/schema.rb
+end
+
+tables = %w(users blog_posts comments)
+
+tables.each do |table_name|
+  # load the corresponding `create_table` statement from db/schema.rb
+  source = Spanner::Translator::Schema.extract_create_table(table_name)
+
+  # print the translated Spanner `create_table` statement
+  puts Spanner::Translator::CLI.process_code!(source)
+end
 ```
 
 ## Development
