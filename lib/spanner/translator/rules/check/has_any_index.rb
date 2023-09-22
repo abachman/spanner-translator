@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require_relative "./base_rule"
-
 module Spanner
   module Translator
     module Rules
-      module CheckRules
+      module Check
         # Check if table has any t.index statement
         class HasAnyIndex < BaseRule
           def on_send(node)

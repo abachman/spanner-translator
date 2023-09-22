@@ -45,6 +45,17 @@ module Spanner
         def any_index?
           @seen["index"]
         end
+
+        def unless_seen(condition)
+          return if @seen[condition]
+
+          yield
+          @seen[condition] = true
+        end
+
+        def conditionally_propagate_argument(arguments, node, name)
+          arguments << node.find_hash_option_source(name) if node.find_hash_option(name)
+        end
       end
     end
   end

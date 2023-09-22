@@ -10,18 +10,18 @@ module Spanner
       class << self
         # process, raising errors if a CheckRule fails
         def process_code!(code,
-                          check_classes = Spanner::Translator::Rules::CheckRules.constants,
-                          rule_classes = Rules::TranslationRules.constants)
+                          check_classes = Rules::Check.constants,
+                          rule_classes = Rules::Translation.constants)
           check_classes.each do |rule_class|
-            process_check_rule(Spanner::Translator::Rules::CheckRules.const_get(rule_class), code)
+            process_check_rule(Spanner::Translator::Rules::Check.const_get(rule_class), code)
           end
 
           process_code(code, rule_classes)
         end
 
-        def process_code(code, rule_classes = Spanner::Translator::Rules::TranslationRules.constants)
+        def process_code(code, rule_classes = Rules::Translation.constants)
           rule_classes.each do |rule_class|
-            code = process_rule(Spanner::Translator::Rules::TranslationRules.const_get(rule_class), code)
+            code = process_rule(Spanner::Translator::Rules::Translation.const_get(rule_class), code)
           end
           formatted(code)
         end
